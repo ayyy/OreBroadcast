@@ -18,7 +18,7 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
-        if(e.getPlayer().isOp()) {
+        if(plugin.isNewVersionAvailable && e.getPlayer().isOp()) {
             plugin.updater.notifyOp(e.getPlayer());
         }
     }

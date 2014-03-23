@@ -3,6 +3,7 @@ package be.bendem.orebroadcast;
 import be.bendem.orebroadcast.commands.CommandHandler;
 import be.bendem.orebroadcast.updater.PlayerJoinListener;
 import be.bendem.orebroadcast.updater.Updater;
+import be.bendem.orebroadcast.updater.Version;
 import org.bukkit.block.Block;
 import org.bukkit.plugin.java.JavaPlugin;
 
