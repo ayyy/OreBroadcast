@@ -32,16 +32,15 @@ public class Updater {
 
     public static final int    PROJECT_ID     = 72299;
     public static final String API_URL        = "https://api.curseforge.com/servermods/files?projectIds=";
-    public static final String UPDATE_MESSAGE = ChatColor.GOLD + "A new version is available, type "
-            + ChatColor.BOLD + "/ob update" + ChatColor.RESET + ChatColor.GOLD + " to download it";
+    public static final String UPDATE_MESSAGE = ChatColor.GOLD + "A new version is available, type " + ChatColor.BOLD + "/ob update" + ChatColor.RESET + ChatColor.GOLD + " to download it";
 
     private final OreBroadcast plugin;
-    private final Version      currentVersion;
+    private final Version      localVersion;
     private final Channel      updateChannel;
 
     public Updater(OreBroadcast plugin) {
         this.plugin = plugin;
-        this.currentVersion = new Version(plugin.getDescription().getVersion());
+        this.localVersion = new Version(plugin.getDescription().getVersion());
         this.updateChannel = plugin.getConfig().getBoolean("use-beta", false) ? Channel.Beta : Channel.Release;
     }
 
@@ -53,17 +52,17 @@ public class Updater {
         return checkNewVersion(newest.getVersion());
     }
 
-    public boolean checkNewVersion(Version newVersion) {
-        return currentVersion.isNewer(newVersion);
+    public boolean checkNewVersion(Version remoteVersion) {
+        return localVersion.isNewer(remoteVersion);
     }
 
     public boolean update() {
-        FileDescription newest = getLastVersion();
-        if(newest == null) {
+        FileDescription remoteVersion = getLastVersion();
+        if(remoteVersion == null) {
             return false;
         }
-        if(checkNewVersion(newest.getVersion())) {
-            downloadFile(newest);
+        if(checkNewVersion(remoteVersion.getVersion())) {
+            downloadFile(remoteVersion);
         }
         return false;
     }
