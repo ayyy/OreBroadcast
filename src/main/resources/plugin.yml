@@ -8,7 +8,7 @@ commands:
     ob:
         usage: |
             /<command> [reload] Reload config from file
-            /<command> [check] Check if a new version is available
+            /<command> [check]  Check if a new version is available
             /<command> [update] Download a new version if available
         description: OreBroadcast commands
         permission: ob
