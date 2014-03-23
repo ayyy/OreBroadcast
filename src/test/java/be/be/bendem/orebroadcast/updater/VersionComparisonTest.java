@@ -25,20 +25,6 @@ public class VersionComparisonTest {
     }
 
     @Test
-    public void testVersionDecomposition() {
-        String version;
-        version = "1.2.3";
-        Assert.assertEquals("Major version of " + version, 1, Version.getMainVersion(version));
-        Assert.assertEquals("Minor version of " + version, 2, Version.getMinorVersion(version));
-        Assert.assertEquals("Version revision of " + version, 3, Version.getVersionRevision(version));
-
-        version = "1.2";
-        Assert.assertEquals("Major version of " + version, 1, Version.getMainVersion(version));
-        Assert.assertEquals("Minor version of " + version, 2, Version.getMinorVersion(version));
-        Assert.assertEquals("Version revision of " + version, 3, Version.getVersionRevision(version));
-    }
-
-    @Test
     public void testNewestVersion() {
         if(version1.equals(version2)) {
             return;

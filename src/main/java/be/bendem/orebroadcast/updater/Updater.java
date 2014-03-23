@@ -112,7 +112,7 @@ public class Updater {
         for(Object object : array.toArray()) {
             FileDescription file = new FileDescription((JSONObject) object);
             // Ignore beta files if updateChannel is release
-            if(file.getChannel().equals(Channel.Beta) && updateChannel.equals(Channel.Release)) {
+            if(!file.getChannel().equals(Channel.Beta) || !updateChannel.equals(Channel.Release)) {
                 files.add(file);
             }
         }
