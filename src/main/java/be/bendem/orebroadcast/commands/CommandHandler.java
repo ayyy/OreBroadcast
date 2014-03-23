@@ -1,5 +1,6 @@
-package be.bendem.orebroadcast;
+package be.bendem.orebroadcast.commands;
 
+import be.bendem.orebroadcast.OreBroadcast;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,8 +14,7 @@ public class CommandHandler implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if(cmd.getName().equalsIgnoreCase("ob") && args.length == 1
-                && args[0].equalsIgnoreCase("reload")
+        if(cmd.getName().equalsIgnoreCase("ob") && args.length == 1 && args[0].equalsIgnoreCase("reload")
                 && sender.hasPermission("ob.reload")) {
             plugin.reloadConfig();
             plugin.loadBlocksToBroadcastList();

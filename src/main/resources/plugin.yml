@@ -7,7 +7,9 @@ description: Broadcast the server when you find ores.
 commands:
     ob:
         usage: |
-            /<ob> [reload] Reload config from file
+            /<command> [reload] Reload config from file
+            /<command> [check] Check if a new version is available
+            /<command> [update] Download a new version if available
         description: OreBroadcast commands
         permission: ob
 
@@ -15,12 +17,26 @@ permissions:
     ob.*:
         description: Give access to all OreBroadcast commands
         children:
+            ob.update: true
             ob.reload: true
             ob.broadcast: true
             ob.receive: true
+    ob.update.*:
+        description: Allow player to check or update the plugin
+        children:
+            ob.update.check: true
+            ob.update.update: true
+    ob.update.check:
+        description: Check if a new version is available
+        default: op
+    ob.update.update:
+        description: Download a new version if available
+        default: op
+
     ob.reload:
         description: Reload config from file
         default: op
+
     ob.broadcast:
         description: Broadcast a message when ore is found
         default: true

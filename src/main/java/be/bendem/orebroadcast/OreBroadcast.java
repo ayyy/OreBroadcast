@@ -1,7 +1,9 @@
 package be.bendem.orebroadcast;
 
+import be.bendem.orebroadcast.commands.CommandHandler;
+import be.bendem.orebroadcast.updater.PlayerJoinListener;
+import be.bendem.orebroadcast.updater.Updater;
 import org.bukkit.block.Block;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -15,29 +17,40 @@ import java.util.logging.Logger;
  */
 public class OreBroadcast extends JavaPlugin {
 
-    public PluginDescriptionFile pdfFile;
     public Logger logger;
-    // As it's currently stored, blocks which have already been broadcasted
-    // will be again after a server restart / reload.
+    public Updater updater;
     public HashSet<Block> broadcastBlacklist = new HashSet<>();
     public ArrayList<String> blocksToBroadcast;
+    public boolean isNewVersionAvailable = false;
 
     @Override
     public void onEnable() {
         logger = getLogger();
-        pdfFile = getDescription();
 
         saveDefaultConfig();
         loadBlocksToBroadcastList();
         getServer().getPluginManager().registerEvents(new BlockBreakListener(this), this);
         getServer().getPluginManager().registerEvents(new BlockPlaceListener(this), this);
         getCommand("ob").setExecutor(new CommandHandler(this));
-        logger.fine(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
+
+        updater = new Updater(this);
+        if(getConfig().getBoolean("check-version-on-startup", true)) {
+            if(updater.checkNewVersion()) {
+                updater.notifyConsole();
+                isNewVersionAvailable = true;
+                if(getConfig().getBoolean("notify-op", true)) {
+                    updater.notifyOps();
+                    getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
+                }
+            }
+        }
+
+        logger.fine(getDescription().getName() + " version " + getDescription().getVersion() + " is enabled!");
     }
 
     @Override
     public void onDisable() {
-        logger.fine(pdfFile.getName() + " want you to have a nice day ;-)");
+        logger.fine(getDescription().getName() + " want you to have a nice day ;-)");
     }
 
     public void loadBlocksToBroadcastList() {
