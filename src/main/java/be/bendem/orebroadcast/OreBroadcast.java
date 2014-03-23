@@ -4,7 +4,10 @@ import be.bendem.orebroadcast.commands.CommandHandler;
 import be.bendem.orebroadcast.updater.PlayerJoinListener;
 import be.bendem.orebroadcast.updater.Updater;
 import be.bendem.orebroadcast.updater.Version;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -64,6 +67,10 @@ public class OreBroadcast extends JavaPlugin {
                 blocksToBroadcast.add("GLOWING_REDSTONE");
             }
         }
+    }
+
+    public static void sendLogMessage(String message, ChatColor color) {
+        Bukkit.getConsoleSender().sendMessage("[" + OreBroadcast.class.getSimpleName() + "] " + (color == null ? "" : color) + message);
     }
 
 }

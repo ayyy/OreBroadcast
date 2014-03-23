@@ -4,7 +4,6 @@ import be.bendem.orebroadcast.OreBroadcast;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -37,13 +36,11 @@ public class Updater {
             + ChatColor.BOLD + "/ob update" + ChatColor.RESET + ChatColor.GOLD + " to download it";
 
     private final OreBroadcast plugin;
-    private final String       pluginName;
     private final Version      currentVersion;
     private final Channel      updateChannel;
 
     public Updater(OreBroadcast plugin) {
         this.plugin = plugin;
-        this.pluginName = plugin.getName();
         this.currentVersion = new Version(plugin.getDescription().getVersion());
         this.updateChannel = plugin.getConfig().getBoolean("use-beta", false) ? Channel.Beta : Channel.Release;
     }
@@ -72,7 +69,7 @@ public class Updater {
     }
 
     public void notifyConsole() {
-        Bukkit.getConsoleSender().sendMessage(UPDATE_MESSAGE);
+        OreBroadcast.sendLogMessage(UPDATE_MESSAGE, ChatColor.GREEN);
     }
 
     public void notifyOps() {
@@ -105,7 +102,7 @@ public class Updater {
     protected FileDescription getLastVersion() {
         String json = new UrlReader(API_URL + PROJECT_ID).read();
         if(json == null) {
-            // TODO Send Failed to read API
+            OreBroadcast.sendLogMessage("Could not contact Curse API...", ChatColor.RED);
             return null;
         }
 
@@ -138,7 +135,7 @@ public class Updater {
    		try {
    			url = new URL(file.getDownloadUrl());
    		} catch (final MalformedURLException e) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "URL malformed");
+            OreBroadcast.sendLogMessage("URL malformed", ChatColor.RED);
             return;
    		}
 
@@ -147,7 +144,7 @@ public class Updater {
    		try {
    			fileLength = url.openConnection().getContentLength();
    		} catch (final IOException e) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Failed to open the connection");
+            OreBroadcast.sendLogMessage("Failed to open the connection", ChatColor.RED);
             return;
    		}
 
@@ -161,13 +158,13 @@ public class Updater {
    				downloaded += chunk;
                 outputStream.write(data, 0, chunk);
    				if (lastTime < System.currentTimeMillis() - 100) {
-   					Bukkit.getConsoleSender().sendMessage(ChatColor.GRAY + "Downloading... " + new DecimalFormat("#00.00").format(downloaded * 100.0 / fileLength) + '%');
+   					OreBroadcast.sendLogMessage("Downloading... " + new DecimalFormat("#00.00").format(downloaded * 100.0 / fileLength) + '%', ChatColor.GRAY);
    					lastTime = System.currentTimeMillis();
    				}
    			}
-            Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Download complete!");
+            OreBroadcast.sendLogMessage("Download complete!", ChatColor.GREEN);
    		} catch (final IOException e) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Download failed...");
+            OreBroadcast.sendLogMessage("Download failed...", ChatColor.RED);
    		}
    	}
 
