@@ -2,6 +2,7 @@ package be.bendem.orebroadcast.commands;
 
 import be.bendem.orebroadcast.OreBroadcast;
 import be.bendem.orebroadcast.updater.Updater;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
@@ -18,7 +19,9 @@ public class CheckCommand extends AbstractCommand {
     @Override
     public void exec(CommandSender sender, List<String> args) {
         if(plugin.updater.checkNewVersion()) {
-            sendLogMessage(sender, Updater.UPDATE_MESSAGE, null);
+            sendLogMessage(sender, Updater.UPDATE_MESSAGE, ChatColor.GREEN);
+        } else {
+            sendLogMessage(sender, "No update available...", null);
         }
     }
 
